@@ -12,7 +12,7 @@ client.connect().then(() => {
   app.use(express.json());
   app.use(cors());
 
-  app.get("/", async (req, res) => {
+  app.get("/todos", async (req, res) => {
     const { rows } = await client.query("SELECT * FROM todo;");
     res.status(200).json({
       status: "success",
@@ -22,11 +22,25 @@ client.connect().then(() => {
     });
   });
 
-  app.get("/:todo_id", async (req, res) => {
+  app.get("/todos/:todo_id", async (req, res) => {
     const todo_id = parseInt(req.params.todo_id);
     const { rows } = await client.query("SELECT * FROM todo WHERE id = $1;", [
       todo_id,
     ]);
+    res.status(200).json({
+      status: "success",
+      data: {
+        rows,
+      },
+    });
+  });
+
+  app.delete("/todos/:todo_id", async (req, res) => {
+    const todo_id = parseInt(req.params.todo_id);
+    const { rows } = await client.query(
+      "DELETE FROM todo WHERE id = $1 RETURNING *",
+      [todo_id]
+    );
     res.status(200).json({
       status: "success",
       data: {
