@@ -13,20 +13,19 @@ client.connect().then(() => {
   app.use(cors());
 
   app.get("/", async (req, res) => {
-    const allData = await client.query("SELECT * FROM people;");
-    // console.table(allData.rows);
+    const { rows } = await client.query("SELECT * FROM todo;");
     res.status(200).json({
       status: "success",
       data: {
-        allData,
+        rows,
       },
     });
   });
 
-  app.get("/:person_id", async (req, res) => {
-    const person_id = parseInt(req.params.person_id);
-    const { rows } = await client.query("SELECT * FROM people WHERE id = $1;", [
-      person_id,
+  app.get("/:todo_id", async (req, res) => {
+    const todo_id = parseInt(req.params.todo_id);
+    const { rows } = await client.query("SELECT * FROM todo WHERE id = $1;", [
+      todo_id,
     ]);
     console.table(rows);
     res.status(200).json({
