@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 client.connect().then(() => {
-  console.log("Connected to myfirstdb!");
+  console.log("Connected to Heroku database!");
   app.use(express.json());
   app.use(cors());
 
@@ -27,7 +27,6 @@ client.connect().then(() => {
     const { rows } = await client.query("SELECT * FROM todo WHERE id = $1;", [
       todo_id,
     ]);
-    console.table(rows);
     res.status(200).json({
       status: "success",
       data: {
