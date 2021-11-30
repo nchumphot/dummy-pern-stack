@@ -13,38 +13,48 @@ client.connect().then(() => {
   app.use(cors());
 
   app.get("/todos", async (req, res) => {
-    const { rows } = await client.query("SELECT * FROM todo;");
+    const getAllTodos = await client.query("SELECT * FROM todo;");
     res.status(200).json({
       status: "success",
       data: {
-        rows,
+        getAllTodos,
       },
     });
   });
 
   app.get("/todos/:todo_id", async (req, res) => {
     const todo_id = parseInt(req.params.todo_id);
-    const { rows } = await client.query("SELECT * FROM todo WHERE id = $1;", [
-      todo_id,
-    ]);
-    res.status(200).json({
-      status: "success",
-      data: {
-        rows,
-      },
-    });
+    const getTodoById = await client.query(
+      "SELECT * FROM todo WHERE id = $1;",
+      [todo_id]
+    );
+    if (getTodoById.rowCount !== 0) {
+      res.status(200).json({
+        status: "success",
+        data: {
+          getTodoById,
+        },
+      });
+    } else {
+      res.status(404).json({
+        status: "fail",
+        data: {
+          id: "Could not find a todo with that id identifier",
+        },
+      });
+    }
   });
 
   app.delete("/todos/:todo_id", async (req, res) => {
     const todo_id = parseInt(req.params.todo_id);
-    const { rows } = await client.query(
+    const deletedTodo = await client.query(
       "DELETE FROM todo WHERE id = $1 RETURNING *",
       [todo_id]
     );
     res.status(200).json({
       status: "success",
       data: {
-        rows,
+        deletedTodo,
       },
     });
   });
