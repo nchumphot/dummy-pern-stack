@@ -6,7 +6,12 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
   const [newDescription, setNewDescription] = useState<string>(
     props.todoItem.description
   );
-  const [newDueDate, setNewDueDate] = useState<string>(props.todoItem.due_date);
+  const [newDueDate, setNewDueDate] = useState<string>(
+    props.todoItem.due_date !== null
+      ? props.todoItem.due_date.substr(0, 10)
+      : ""
+  );
+  //   console.log(props.todoItem.due_date);
 
   const handleEditItem = (id: number, description: string, dueDate: string) => {
     axios.put(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`, {
@@ -14,6 +19,7 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
       due_date: dueDate,
       is_complete: props.todoItem.is_complete,
     });
+    window.location.reload();
   };
 
   return (
@@ -50,7 +56,11 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
               <input
                 type="date"
                 value={newDueDate}
-                onChange={(e) => setNewDueDate(e.target.value)}
+                onChange={(e) => {
+                  setNewDueDate(e.target.value);
+                  console.log(newDueDate);
+                  console.log(e.target.value);
+                }}
               />
             </div>
 
@@ -58,7 +68,7 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-danger"
+                className="btn btn-primary"
                 data-dismiss="modal"
                 onClick={() =>
                   handleEditItem(props.todoItem.id, newDescription, newDueDate)
