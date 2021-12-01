@@ -21,8 +21,8 @@ export function AddToDoItem(): JSX.Element {
         description: description,
         due_date: dueDate === "" ? null : dueDate,
       });
-      // setMyDescription("");
-      // setMyDueDate("");
+      setMyDescription("");
+      setMyDueDate("");
     }
   };
 
