@@ -1,6 +1,6 @@
 import { ITodo } from "../ITodo";
 import axios from "axios";
-import { EditTodo } from "./EditTodo";
+import { EditToDoItem } from "./EditToDoItem";
 
 export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
   const handleDeleteItem = (id: number) => {
@@ -41,7 +41,7 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
         <td>{item.description}</td>
         <td>{item.due_date === null ? "None" : item.due_date.substr(0, 10)}</td>
         <td>
-          <EditTodo />
+          <EditToDoItem />
         </td>
         <td>
           <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
