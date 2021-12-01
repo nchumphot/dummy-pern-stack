@@ -2,9 +2,12 @@ import { ToDoList } from "./components/ToDoList";
 import { PageHeader } from "./components/PageHeader";
 import { AddToDoItem } from "./components/AddToDoItem";
 import { useState, useEffect } from "react";
+import { ITodo } from "./ITodo";
 
 function App(): JSX.Element {
-  const [allTodos, setAllTodos] = useState<any[]>([]);
+  const [allTodos, setAllTodos] = useState<ITodo[]>([]);
+  const filterOptions = ["All", "Uncompleted", "Overdue"];
+  const [filter, setFilter] = useState<string>(filterOptions[1]);
 
   const fetchData = async () => {
     const response = await fetch(
@@ -21,7 +24,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <PageHeader />
+      <PageHeader {...{ filter, setFilter }} />
       <AddToDoItem />
       <ToDoList todos={allTodos} />
     </>
