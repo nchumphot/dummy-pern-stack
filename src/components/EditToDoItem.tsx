@@ -41,7 +41,19 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
             {/* <!-- Modal Header --> */}
             <div className="modal-header">
               <h4 className="modal-title">Edit to-do</h4>
-              <button type="button" className="close" data-dismiss="modal">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                onClick={() => {
+                  setNewDescription(props.todoItem.description);
+                  setNewDueDate(
+                    props.todoItem.due_date !== null
+                      ? props.todoItem.due_date.substr(0, 10)
+                      : ""
+                  );
+                }}
+              >
                 &times;
               </button>
             </div>
