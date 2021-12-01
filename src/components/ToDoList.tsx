@@ -41,7 +41,7 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
         <td>{item.description}</td>
         <td>{item.due_date === null ? "None" : item.due_date.substr(0, 10)}</td>
         <td>
-          <EditToDoItem />
+          <EditToDoItem todoItem={item} />
         </td>
         <td>
           <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
