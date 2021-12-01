@@ -5,16 +5,24 @@ export function AddToDoItem(): JSX.Element {
   const [myDescription, setMyDescription] = useState<string>("");
   const [myDueDate, setMyDueDate] = useState<string>("");
 
-  const handleAddItem = (description: string, dueDate: string) => {
+  const handleAddItem = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    description: string,
+    dueDate: string
+  ) => {
+    e.preventDefault();
     if (description === "" && dueDate === "") {
       alert("Please enter what you want to do and a due date (optional)");
     } else if (description === "") {
       alert("Please enter what you want to do.");
     } else {
-      axios.post("/todos", {
+      console.log(description, dueDate);
+      await axios.post("https://nchumphot-todo-app.herokuapp.com/todos", {
         description: description,
-        dueDate: dueDate,
+        due_date: dueDate === "" ? null : dueDate,
       });
+      // setMyDescription("");
+      // setMyDueDate("");
     }
   };
 
@@ -31,11 +39,14 @@ export function AddToDoItem(): JSX.Element {
         <input
           type="date"
           value={myDueDate}
-          onChange={(e) => setMyDueDate(e.target.value)}
+          onChange={(e) => {
+            setMyDueDate(e.target.value);
+            // console.log(e.target.value);
+          }}
         />
         <button
           type="submit"
-          onClick={() => handleAddItem(myDescription, myDueDate)}
+          onClick={(e) => handleAddItem(e, myDescription, myDueDate)}
         >
           Add
         </button>
