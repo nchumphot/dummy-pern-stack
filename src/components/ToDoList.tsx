@@ -44,7 +44,12 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
           <EditToDoItem todoItem={item} />
         </td>
         <td>
-          <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDeleteItem(item.id)}
+          >
+            Delete
+          </button>
         </td>
       </tr>
     );
