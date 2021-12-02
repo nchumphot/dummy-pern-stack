@@ -5,6 +5,7 @@ export function PageHeader(props: {
   return (
     <>
       <h1>Welcome to my To-do App!</h1>
+      Show:{" "}
       <input
         type="radio"
         name="filter"
