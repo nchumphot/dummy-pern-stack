@@ -1,11 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import { fetchData } from "../fetchData";
+import { ITodo } from "../ITodo";
 
-export function AddToDoItem(): JSX.Element {
+export function AddToDoItem(props: {
+  setAllTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
+}): JSX.Element {
   const [myDescription, setMyDescription] = useState<string>("");
   const [myDueDate, setMyDueDate] = useState<string>("");
 
-  const handleAddItem = async (
+  const handleAddItem = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     description: string,
     dueDate: string
@@ -16,10 +20,12 @@ export function AddToDoItem(): JSX.Element {
     } else if (description === "") {
       alert("Please enter what you want to do.");
     } else {
-      await axios.post("https://nchumphot-todo-app.herokuapp.com/todos", {
-        description: description,
-        due_date: dueDate === "" ? null : dueDate,
-      });
+      axios
+        .post("https://nchumphot-todo-app.herokuapp.com/todos", {
+          description: description,
+          due_date: dueDate === "" ? null : dueDate,
+        })
+        .then(() => fetchData(props.setAllTodos));
       setMyDescription("");
       setMyDueDate("");
     }
