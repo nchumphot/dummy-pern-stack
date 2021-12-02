@@ -1,8 +1,14 @@
 import { ITodo } from "../ITodo";
 import axios from "axios";
 import { EditToDoItem } from "./EditToDoItem";
+import { fetchData } from "../fetchData";
 
-export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
+export function ToDoList(props: {
+  allTodos: ITodo[];
+  setAllTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  filter: string;
+  sorting: string;
+}): JSX.Element {
   const handleDeleteItem = (id: number) => {
     axios.delete(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`);
   };
@@ -13,12 +19,14 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
     dueDate: string,
     isCompleted: boolean
   ) => {
-    axios.put(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`, {
-      description: description,
-      due_date: dueDate,
-      is_complete: isCompleted === true ? false : true,
-    });
-    console.log(isCompleted === true ? false : true);
+    const newIsCompleted = !isCompleted;
+    axios
+      .put(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`, {
+        description: description,
+        due_date: dueDate,
+        is_complete: newIsCompleted,
+      })
+      .then(() => fetchData(props.setAllTodos));
   };
 
   const todoItem = (item: ITodo): JSX.Element => {
@@ -27,15 +35,15 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
         <td>
           <input
             type="checkbox"
-            defaultChecked={item.is_complete}
-            onClick={() =>
+            checked={item.is_complete}
+            onChange={() => {
               handleMarkAsCompleted(
                 item.id,
                 item.description,
                 item.due_date,
                 item.is_complete
-              )
-            }
+              );
+            }}
           />
         </td>
         <td>{item.description}</td>
@@ -55,6 +63,28 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
     );
   };
 
+  const filterbyOptions = (item: ITodo) => {
+    if (props.filter === "All") {
+      return item;
+    } else if (props.filter === "Uncompleted") {
+      return !item.is_complete && item;
+    } else if (props.filter === "Overdue") {
+      const shouldShow =
+        new Date(item.due_date) < new Date() && item.is_complete === false;
+      return shouldShow && item;
+    }
+  };
+
+  const sortByOptions = (a: ITodo, b: ITodo) => {
+    if (props.sorting === "Due date") {
+      return Date.parse(a.due_date) - Date.parse(b.due_date);
+    } else if (props.sorting === "Creation date") {
+      return Date.parse(a.creation_date) - Date.parse(b.creation_date);
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <>
       <h2>My to-do list:</h2>
@@ -68,7 +98,12 @@ export function ToDoList(props: { todos: ITodo[] }): JSX.Element {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <tbody>{props.todos.map((item) => todoItem(item))}</tbody>
+        <tbody>
+          {props.allTodos
+            .filter(filterbyOptions)
+            .sort(sortByOptions)
+            .map((item) => todoItem(item))}
+        </tbody>
       </table>
     </>
   );

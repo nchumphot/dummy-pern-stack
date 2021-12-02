@@ -2,28 +2,34 @@ import { ToDoList } from "./components/ToDoList";
 import { PageHeader } from "./components/PageHeader";
 import { AddToDoItem } from "./components/AddToDoItem";
 import { useState, useEffect } from "react";
+import { ITodo } from "./ITodo";
+import { fetchData } from "./fetchData";
 
 function App(): JSX.Element {
-  const [allTodos, setAllTodos] = useState<any[]>([]);
-
-  const fetchData = async () => {
-    const response = await fetch(
-      "https://nchumphot-todo-app.herokuapp.com/todos"
-    );
-    const jsonBody = await response.json();
-    // console.log(jsonBody.result.rows);
-    setAllTodos(jsonBody.result.rows);
-  };
+  const [allTodos, setAllTodos] = useState<ITodo[]>([]);
+  const filterOptions = ["Uncompleted", "All", "Overdue"];
+  const [filter, setFilter] = useState<string>(filterOptions[0]);
+  const sortOptions = ["Due date", "Creation date"];
+  const [sorting, setSorting] = useState<string>(sortOptions[0]);
 
   useEffect(() => {
-    fetchData();
+    fetchData(setAllTodos);
   }, []);
 
   return (
     <>
-      <PageHeader />
+      <PageHeader
+        {...{ filter, setFilter }}
+        {...{ sorting, setSorting }}
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
+      />
       <AddToDoItem />
-      <ToDoList todos={allTodos} />
+      <ToDoList
+        {...{ allTodos, setAllTodos }}
+        filter={filter}
+        sorting={sorting}
+      />
     </>
   );
 }
