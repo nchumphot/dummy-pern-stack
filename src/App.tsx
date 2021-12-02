@@ -3,7 +3,7 @@ import { PageHeader } from "./components/PageHeader";
 import { AddToDoItem } from "./components/AddToDoItem";
 import { useState, useEffect } from "react";
 import { ITodo } from "./util/ITodo";
-import { fetchData } from "./fetchData";
+import { fetchData } from "./util/fetchData";
 import { trackPromise } from "react-promise-tracker";
 
 function App(): JSX.Element {

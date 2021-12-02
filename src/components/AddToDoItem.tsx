@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { fetchData } from "../fetchData";
+import { fetchData } from "../util/fetchData";
 import { ITodo } from "../util/ITodo";
 
 export function AddToDoItem(props: {
