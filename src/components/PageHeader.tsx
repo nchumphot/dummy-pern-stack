@@ -1,35 +1,48 @@
 export function PageHeader(props: {
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
+  sorting: string;
+  setSorting: React.Dispatch<React.SetStateAction<string>>;
+  filterOptions: string[];
+  sortOptions: string[];
 }): JSX.Element {
+  const radioButton = (
+    option: string,
+    state: string,
+    key: number,
+    groupName: string,
+    setState: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    return (
+      <>
+        {" "}
+        <input
+          type="radio"
+          name={groupName}
+          value={option}
+          key={key}
+          checked={state === option}
+          onChange={() => {
+            setState(option);
+          }}
+        />
+        <label htmlFor={option}>{option}</label>
+      </>
+    );
+  };
+
   return (
     <>
       <h1>Welcome to my To-do App!</h1>
-      Show:{" "}
-      <input
-        type="radio"
-        name="filter"
-        value={0}
-        checked={props.filter === "All"}
-        onClick={() => props.setFilter("All")}
-      />
-      <label htmlFor="All">All</label>{" "}
-      <input
-        type="radio"
-        name="filter"
-        value={1}
-        checked={props.filter === "Uncompleted"}
-        onClick={() => props.setFilter("Uncompleted")}
-      />
-      <label htmlFor="Uncompleted">Uncompleted</label>{" "}
-      <input
-        type="radio"
-        name="filter"
-        value={2}
-        checked={props.filter === "Overdue"}
-        onClick={() => props.setFilter("Overdue")}
-      />
-      <label htmlFor="Overdue">Overdue</label>
+      <label>Show:</label>
+      {props.filterOptions.map((item, idx) =>
+        radioButton(item, props.filter, idx, "filter-options", props.setFilter)
+      )}
+      <br />
+      <label>Sort by:</label>
+      {props.sortOptions.map((item, idx) =>
+        radioButton(item, props.sorting, idx, "sort-options", props.setSorting)
+      )}
     </>
   );
 }
