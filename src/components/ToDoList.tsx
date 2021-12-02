@@ -1,7 +1,7 @@
-import { ITodo } from "../ITodo";
+import { ITodo } from "../util/ITodo";
 import axios from "axios";
 import { EditToDoItem } from "./EditToDoItem";
-import { fetchData } from "../fetchData";
+import { fetchData } from "../util/fetchData";
 
 export function ToDoList(props: {
   allTodos: ITodo[];
