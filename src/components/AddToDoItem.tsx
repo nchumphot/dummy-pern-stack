@@ -16,7 +16,6 @@ export function AddToDoItem(): JSX.Element {
     } else if (description === "") {
       alert("Please enter what you want to do.");
     } else {
-      console.log(description, dueDate);
       await axios.post("https://nchumphot-todo-app.herokuapp.com/todos", {
         description: description,
         due_date: dueDate === "" ? null : dueDate,
@@ -41,7 +40,6 @@ export function AddToDoItem(): JSX.Element {
           value={myDueDate}
           onChange={(e) => {
             setMyDueDate(e.target.value);
-            // console.log(e.target.value);
           }}
         />
         <button
