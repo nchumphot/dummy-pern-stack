@@ -24,7 +24,7 @@ function App(): JSX.Element {
         filterOptions={filterOptions}
         sortOptions={sortOptions}
       />
-      <AddToDoItem />
+      <AddToDoItem setAllTodos={setAllTodos} />
       <ToDoList
         {...{ allTodos, setAllTodos }}
         filter={filter}
