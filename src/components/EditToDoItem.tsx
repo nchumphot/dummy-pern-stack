@@ -11,7 +11,6 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
       ? props.todoItem.due_date.substr(0, 10)
       : ""
   );
-  //   console.log(props.todoItem.due_date);
 
   const handleEditItem = (id: number, description: string, dueDate: string) => {
     axios.put(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`, {
@@ -70,8 +69,6 @@ export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {
                 value={newDueDate}
                 onChange={(e) => {
                   setNewDueDate(e.target.value);
-                  console.log(newDueDate);
-                  console.log(e.target.value);
                 }}
               />
             </div>
