@@ -10,7 +10,9 @@ export function ToDoList(props: {
   sorting: string;
 }): JSX.Element {
   const handleDeleteItem = (id: number) => {
-    axios.delete(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`);
+    axios
+      .delete(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`)
+      .then(() => fetchData(props.setAllTodos));
   };
 
   const handleMarkAsCompleted = (
