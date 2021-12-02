@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { ITodo } from "../ITodo";
+import { ITodo } from "../util/ITodo";
 import axios from "axios";
 
 export function EditToDoItem(props: { todoItem: ITodo }): JSX.Element {

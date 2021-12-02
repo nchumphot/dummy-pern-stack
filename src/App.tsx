@@ -2,8 +2,9 @@ import { ToDoList } from "./components/ToDoList";
 import { PageHeader } from "./components/PageHeader";
 import { AddToDoItem } from "./components/AddToDoItem";
 import { useState, useEffect } from "react";
-import { ITodo } from "./ITodo";
+import { ITodo } from "./util/ITodo";
 import { fetchData } from "./fetchData";
+import { trackPromise } from "react-promise-tracker";
 
 function App(): JSX.Element {
   const [allTodos, setAllTodos] = useState<ITodo[]>([]);
@@ -13,7 +14,7 @@ function App(): JSX.Element {
   const [sorting, setSorting] = useState<string>(sortOptions[0]);
 
   useEffect(() => {
-    fetchData(setAllTodos);
+    trackPromise(fetchData(setAllTodos));
   }, []);
 
   return (

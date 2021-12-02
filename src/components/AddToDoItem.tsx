@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { fetchData } from "../fetchData";
-import { ITodo } from "../ITodo";
+import { ITodo } from "../util/ITodo";
 
 export function AddToDoItem(props: {
   setAllTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
