@@ -7,6 +7,7 @@ export function ToDoList(props: {
   allTodos: ITodo[];
   setAllTodos: React.Dispatch<React.SetStateAction<ITodo[]>>;
   filter: string;
+  sorting: string;
 }): JSX.Element {
   const handleDeleteItem = (id: number) => {
     axios.delete(`https://nchumphot-todo-app.herokuapp.com/todos/${id}`);
@@ -62,15 +63,25 @@ export function ToDoList(props: {
     );
   };
 
-  const filterbyOptions = (item: ITodo, option: string) => {
-    if (option === "All") {
+  const filterbyOptions = (item: ITodo) => {
+    if (props.filter === "All") {
       return item;
-    } else if (option === "Uncompleted") {
+    } else if (props.filter === "Uncompleted") {
       return !item.is_complete && item;
-    } else if (option === "Overdue") {
+    } else if (props.filter === "Overdue") {
       const shouldShow =
         new Date(item.due_date) < new Date() && item.is_complete === false;
       return shouldShow && item;
+    }
+  };
+
+  const sortByOptions = (a: ITodo, b: ITodo) => {
+    if (props.sorting === "Due date") {
+      return Date.parse(a.due_date) - Date.parse(b.due_date);
+    } else if (props.sorting === "Creation date") {
+      return Date.parse(a.creation_date) - Date.parse(b.creation_date);
+    } else {
+      return 0;
     }
   };
 
@@ -89,7 +100,8 @@ export function ToDoList(props: {
         </thead>
         <tbody>
           {props.allTodos
-            .filter((item) => filterbyOptions(item, props.filter))
+            .filter(filterbyOptions)
+            .sort(sortByOptions)
             .map((item) => todoItem(item))}
         </tbody>
       </table>
